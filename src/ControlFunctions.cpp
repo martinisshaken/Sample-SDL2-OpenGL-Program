@@ -24,7 +24,7 @@ int Initialize()
    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
 
-   window = SDL_CreateWindow("Segfault Studios Presents...",
+   window = SDL_CreateWindow("Test...",
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);// | SDL_WINDOW_FULLSCREEN); //SDL_WINDOW_SHOWN);
