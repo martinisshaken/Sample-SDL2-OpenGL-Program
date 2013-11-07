@@ -1,0 +1,38 @@
+import os
+import platform
+
+libslist = []
+
+if platform.system() == 'Windows':
+	env = Environment(tools = ['mingw'], ENV = os.environ) 
+	env.PrependENVPath('PATH', 'C:/MinGW/bin')
+	env.PrependENVPath('LIB', 'C:/MinGW/lib')
+	#Prepend OpenGL32 and mingw32
+	libslist.append(['mingw32', 'OpenGL32'])
+else:
+	env = Environment(ENV = os.environ)
+	home = os.environ['HOME']
+	libslist.append(['GL', 'GLU'])
+	#Prepend to liblist the GL and GLU libs 
+	
+root = os.getcwd()
+libslist.append(['SDL2main', 'SDL2', 'SDL2_mixer', 'SDL2_image', 'SDL2_ttf'])#, 'GL', 'GLU']#, 'boost_system']
+
+includePaths = [root + '/include', '/usr/local/include/SDL2', 'C:/SDL2/SDL2-2.0.0/include',
+            'C:/SDL2/SDL2-2.0.0/include/SDL2',
+				'C:/SDL2/SDL2_image-2.0.0/include', 'C:/SDL2/SDL2_ttf-2.0.12/include',
+				'C:/SDL2/SDL2_mixer-2.0.0/include', 'D:/Bridge/boost_1_51_0',
+				'C:/boost/boost_1_51_0',
+				#'C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include']
+				'C:/MinGW/include']
+				
+libPaths = ['C:/SDL2/SDL2-2.0.0/lib', 'C:/SDL2/SDL2_ttf-2.0.12/lib', 
+			'C:/SDL2/SDL2_mixer-2.0.0/lib', 'C:/SDL2/SDL2_image-2.0.0/lib']#,
+			#'C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib',
+			#'C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib']
+env.Append(CPPPATH=includePaths)
+env.Append(LIBPATH=libPaths)
+sources = Glob('./src/*.cpp')
+
+env.Program(target = root + '/bin/game', source = sources, LIBS = libslist, CCFLAGS = ['-g', '-Wall'])
+
