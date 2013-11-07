@@ -57,15 +57,14 @@ int Initialize()
 //Initialize Open GL///////////////////////////////////////////////////
 bool SDL_GL_Enter2DMode()
 {
-   /* Note, there may be other things you need to change,
-      depending on how you have your OpenGL state set up.
-   */
+   // Note, there may be other things you need to change,
+   //   depending on how you have your OpenGL state set up.
    glPushAttrib(GL_ENABLE_BIT);
    glDisable(GL_DEPTH_TEST);
    glDisable(GL_CULL_FACE);
    glEnable(GL_TEXTURE_2D);
 
-   /* This allows alpha blending of 2D textures with the scene */
+   //This allows alpha blending of 2D textures with the scene 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

@@ -3,6 +3,9 @@
 #include "SDL2/SDL_image.h"
 #include <iostream>
 #include "Texture.h"
+#include <chrono>
+#include <thread>
+
 using namespace std;
 
 //ControlFunctions.cpp Function Declarations/////////
@@ -103,14 +106,18 @@ void render()
 }
 
 
+using namespace std::chrono;
 int main(int argc, char* argv[])
 {
    Initialize(); //Start SDL
 
    background = loadImage("images/cloudTile.png");
+
+   std::chrono::time_point<std::chrono::system_clock> start, end;
    
    while(done != true) //game loop logic
-   {   
+   { 
+      start = std::chrono::system_clock::now();
       update();
       render();
 
@@ -118,6 +125,18 @@ int main(int argc, char* argv[])
       SDL_GL_SwapWindow(window);
       glClear( GL_COLOR_BUFFER_BIT );
 
+
+      end = std::chrono::system_clock::now();
+      std::chrono::duration<double> elapsed_seconds = end-start;
+      float timer = elapsed_seconds.count() * 1000;
+      std::cout<< "Frame Time: " << timer << "ms\n";
+
+   /*   if(timer < 16.66)
+      {
+         float t = (16.66666666 - timer) * 1000000;
+         cout<<"Sleeping for :"<<16.66 - timer<<" ms"<<endl;
+         this_thread::sleep_for(nanoseconds((long)t));
+      }*/
    }
 
    Shutdown();
