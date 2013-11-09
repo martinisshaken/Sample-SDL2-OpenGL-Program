@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include <chrono>
 #include <thread>
+#include <unistd.h>
 
 using namespace std;
 
@@ -51,6 +52,9 @@ void Draw(const Texture& texture, float x, float y, SDL_Rect* clip = NULL)
       quadHeight = clip->h;
    }   
 
+   // Bind the texture to which subsequent calls refer to
+   glBindTexture( GL_TEXTURE_2D, texture.tex);
+
    glBegin( GL_QUADS );
       glTexCoord2f(  texLeft,    texTop ); glVertex2f( x,               y );
       glTexCoord2f( texRight,    texTop ); glVertex2f( x +quadWidth,    y );
@@ -82,6 +86,11 @@ void update()
    bgx++;
    bgy++;
 
+   if(bgx > 800)
+      bgx = 0;
+   if(bgy > 600)
+      bgy = 0; 
+
    SDL_Event event;
 
    while(SDL_PollEvent(&event))
@@ -111,27 +120,36 @@ int main(int argc, char* argv[])
 {
    Initialize(); //Start SDL
 
-   background = loadImage("images/cloudTile.png");
+   background = loadImage("images/cloudTile.bmp");
 
    std::chrono::time_point<std::chrono::system_clock> start, end;
-   
+   static std::chrono::time_point<std::chrono::system_clock> last = std::chrono::system_clock::now();
+  
    while(done != true) //game loop logic
    { 
-      start = std::chrono::system_clock::now();
+      //start = std::chrono::system_clock::now();
       update();
       render();
 
       //Display rendered data to the screen
       SDL_GL_SwapWindow(window);
+      glFinish();
       glClear( GL_COLOR_BUFFER_BIT );
 
 
-      end = std::chrono::system_clock::now();
-      std::chrono::duration<double> elapsed_seconds = end-start;
-      float timer = elapsed_seconds.count() * 1000;
+      //end = std::chrono::system_clock::now();
+      //std::chrono::duration<double> elapsed_seconds = end-start;
+      //float timer = elapsed_seconds.count() * 1000;
+      //std::cout<< "Frame Time: " << timer << "ms\n";
+
+      std::chrono::time_point<std::chrono::system_clock> current = std::chrono::system_clock::now();
+      std::chrono::duration<float> elapsed_seconds = current - last;
+      last = current;
+
+      float timer = elapsed_seconds.count() * 1000.f;
       std::cout<< "Frame Time: " << timer << "ms\n";
 
-   /*   if(timer < 16.66)
+      /*if(timer < 16.66)
       {
          float t = (16.66666666 - timer) * 1000000;
          cout<<"Sleeping for :"<<16.66 - timer<<" ms"<<endl;

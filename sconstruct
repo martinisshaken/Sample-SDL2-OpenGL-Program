@@ -11,7 +11,7 @@ if platform.system() == 'Windows':
 else:
 	env = Environment(ENV = os.environ)
 	home = os.environ['HOME']
-	libslist.append(['GL', 'GLU'])
+	libslist.append(['GL', 'GLU', 'glut'])
 	
 root = os.getcwd()
 libslist.append(['SDL2main', 'SDL2', 'SDL2_mixer', 'SDL2_image', 'SDL2_ttf'])#, 'boost_system']
